@@ -1,0 +1,17 @@
+{
+  "name": "MONOREPO",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently -k 'pnpm --filter @app/api dev' 'pnpm --filter web dev'",
+    "build:start": "NODE_ENV=production pnpm --filter @app/api build && pnpm --filter @app/web build && rm -rf apps/api/dist/client && mkdir -p apps/api/dist/client && cp -r apps/web/dist/spa/* apps/api/dist/client/ && node apps/api/dist/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "LEROY Nicolas",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
