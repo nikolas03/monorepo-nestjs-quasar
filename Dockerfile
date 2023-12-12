@@ -14,14 +14,12 @@ RUN npm run build
 
 FROM node:20-bullseye-slim
 WORKDIR /app
-RUN addgroup --system monorepo && adduser --system --ingroup monorepo monorepo
-COPY --from=buildapi /app/package.json .
+RUN addgroup --system monorepo && adduser --system --ingroup monorepo monorepo && mkdir client
 COPY ecosystem.config.js .
-RUN npm install -g pm2 && \
-    npm i --omit-dev
-
+RUN npm install -g pm2
+COPY --from=buildapi /app/package.json .
+RUN npm i --production
 COPY --from=buildapi /app/dist .
-RUN mkdir client
 COPY --from=buildweb /app/dist/spa ./client
 RUN chown -R monorepo:monorepo /app
 USER monorepo
